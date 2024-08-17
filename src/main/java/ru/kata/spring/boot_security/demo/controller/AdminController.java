@@ -14,6 +14,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.security.Principal;
 import java.util.Set;
 
 @Controller
@@ -28,33 +29,30 @@ public class AdminController {
     }
 
     @GetMapping
-    public String userList(Model model) {
+    public String userList(Principal principal, Model model) {
+        User user = userService.findByUsername(principal.getName());
         model.addAttribute("users", userService.allUsers());
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roleService.getRoles());
         return "admin";
     }
 
-    @GetMapping("/user-create")
-    public String registration(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("roles", roleService.getRoles());
-        return "registration";
-    }
-
-    @PostMapping("/user-create")
-    public String addUser(@ModelAttribute("user") User user, @RequestParam("roles") Set<String> roles) {
+    @PostMapping
+    public String addUser(@ModelAttribute("newuser") User user, @RequestParam("roles") Set<String> roles) {
         userService.saveUser(user, roles);
         return "redirect:/admin";
     }
 
     @GetMapping("/{id}/edit")
     public String editUserForm(Model model, @PathVariable("id") Integer id) {
-        model.addAttribute("roles", roleService.getRoles());
+        model.addAttribute("editRoles", roleService.getRoles());
         model.addAttribute("user", userService.findUserById(id));
         return "user-edit";
     }
 
     @PatchMapping("/{id}/edit")
     public String update(@ModelAttribute("user") User user
-            , @RequestParam(value = "roles") Set<String> roles) {
+            , @RequestParam(value = "editRoles") Set<String> roles) {
         userService.saveUser(user, roles);
         return "redirect:/admin";
     }

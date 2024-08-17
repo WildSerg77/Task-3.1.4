@@ -65,11 +65,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Transactional
     @Override
     public void saveUser(User user, Set<String> roles) {
-        User existingUser = findUserById(user.getId());
-        if (!bCryptPasswordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        } else {
-            user.setPassword(existingUser.getPassword());
+        if (user.getId() != null) {
+            User existingUser = findUserById(user.getId());
+            if (!bCryptPasswordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
+                user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            } else {
+                user.setPassword(existingUser.getPassword());
+            }
         }
         user.setRoles(roleService.getSetOfRoles(roles));
         userDao.save(user);
