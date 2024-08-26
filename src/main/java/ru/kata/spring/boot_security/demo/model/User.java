@@ -8,7 +8,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
-import jakarta.persistence.Transient;
 import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;

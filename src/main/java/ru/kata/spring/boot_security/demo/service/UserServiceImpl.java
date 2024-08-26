@@ -15,7 +15,6 @@ import ru.kata.spring.boot_security.demo.model.User;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserDetailsService, UserService {
