@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Transactional
     @Override
-    public void saveUser(User user, Set<String> roles) {
+    public User saveUser(User user) {
         if (user.getId() != null) {
             User existingUser = findUserById(user.getId());
             if (!bCryptPasswordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
@@ -72,9 +72,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             } else {
                 user.setPassword(existingUser.getPassword());
             }
+        } else {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         }
-        user.setRoles(roleService.getSetOfRoles(roles));
-        userDao.save(user);
+        return userDao.save(user);
     }
 
     @Transactional

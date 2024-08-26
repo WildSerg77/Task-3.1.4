@@ -8,7 +8,7 @@ import java.util.Set;
 public interface UserService {
     User findUserById (Integer id);
     List<User> allUsers();
-    void saveUser(User user, Set<String> roles);
+    User saveUser(User user);
     void deleteUser(Integer id);
     User findByUsername(String username);
 

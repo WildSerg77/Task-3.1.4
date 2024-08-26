@@ -12,13 +12,9 @@
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark">
-    <span class="navbar-brand mb-0 h1">
+    <div class="navbar-brand mb-0 h1" id="user-print-name-and-role">
 
-         <strong><a th:text="${user.getUsername()}">Логин</a></strong>
-        <span class="text-start">с ролью:
-            <a th:each="role : ${user.getRoles()}" th:text="${role} + ' '"></a>
-        </span>
-    </span>
+    </div>
     <ul class="navbar-nav px-4">
         <li class="nav-item text-nowrap">
             <a class="nav-link" href="/logout">Выйти</a>
@@ -30,9 +26,9 @@
     <div class="col-2 fixed-left">
         <div th:fragment="leftmenu">
             <ul class="nav flex-sm-column">
-                <li class="nav-item bg-primary" sec:authorize="hasRole('USER')">
+                <li class="nav-item bg-primary" sec:authorize="hasRole('ROLE_USER')">
                     <a class="nav-link text-white"
-                       href="#" th:href="@{/user}">ROLE USER</a>
+                       href="#" th:href="@{/user}">Пользователь</a>
                 </li>
             </ul>
         </div>
@@ -50,25 +46,18 @@
                         <th scope="col">Имя</th>
                         <th scope="col">Возраст</th>
                         <th scope="col">Электронная почта</th>
-                        <th scope="col">Роль</th>
                         <th scope="col">Логин</th>
+                        <th scope="col">Роль</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr th:each="msg : ${user}">
-                        <td th:text="${msg.getId()}"></td>
-                        <td th:text="${msg.getName()}"></td>
-                        <td th:text="${msg.getAge()}"></td>
-                        <td th:text="${msg.getEmail()}"></td>
-                        <td><span th:each="role : ${msg.getRoles()}" th:text="${role} + ' '"></span></td>
-                        <td th:text="${msg.getUsername()}"></td>
-                    </tr>
+                    <tbody id="user-data-table">
+
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
-
+<script src="user.js"></script>
 </body>
 </html>

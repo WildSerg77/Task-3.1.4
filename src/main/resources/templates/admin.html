@@ -6,19 +6,14 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <title>Страница администратора</title>
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark">
-    <span class="navbar-brand mb-0 h1">
+    <div class="navbar-brand mb-0 h1" id="admin-print-name-and-roles">
 
-         <strong><a th:text="${user.getUsername()}">Логин</a></strong>
-        <span class="text-start">с ролью:
-            <a th:each="role : ${user.getRoles()}" th:text="${role} + ' '"></a>
-        </span>
-    </span>
+    </div>
     <ul class="navbar-nav px-4">
         <li class="nav-item text-nowrap">
             <a class="nav-link" href="/logout">Выйти</a>
@@ -32,11 +27,11 @@
             <ul class="nav flex-sm-column">
                 <li class="nav-item bg-primary">
                     <a class="nav-link text-white"
-                       href="#" th:href="@{/admin}">ROLE ADMIN</a>
+                       href="#" th:href="@{/admin}">Администратор</a>
                 </li>
                 <li class="nav-item bg-primary">
                     <a class="nav-link text-white"
-                       href="#" th:href="@{/user}">ROLE USER</a>
+                       href="#" th:href="@{/user}">Пользователь</a>
                 </li>
             </ul>
         </div>
@@ -65,31 +60,14 @@
                             <th scope="col">Имя</th>
                             <th scope="col">Возраст</th>
                             <th scope="col">Электронная почта</th>
-                            <th scope="col">Роль</th>
                             <th scope="col">Логин</th>
+                            <th scope="col">Роль</th>
                             <th scope="col">Изменить</th>
                             <th scope="col">Удалить</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr th:each="pers : ${users}">
-                            <td th:text="${pers.getId()}">ID</td>
-                            <td th:text="${pers.getName()}">Name</td>
-                            <td th:text="${pers.getAge()}">Age</td>
-                            <td th:text="${pers.getEmail()}">Email</td>
-                            <td><span th:each="role : ${pers.getRoles()}" th:text="${role} + ' '"></span></td>
-                            <td th:text="${pers.getUsername()}">Username</td>
-                            <td>
-                                <button th:data-bs-target="${'#edit' + pers.getId()}" type="button" class="btn btn-info"
-                                        data-bs-toggle="modal">Изменить
-                                </button>
-                            </td>
-                            <td>
-                                <button th:data-bs-target="${'#delete' + pers.getId()}" type="button" class="btn btn-danger"
-                                        data-bs-toggle="modal">Удалить
-                                </button>
-                            </td>
-                        </tr>
+                        <tbody class="users-table">
+
                         </tbody>
                     </table>
                 </div>
@@ -98,11 +76,11 @@
             <div id="nav-new-user" class="tab-pane fade" role="tabpanel" aria-labelledby="nav-new-user-tab">
                 <p><strong>Добавить пользователя</strong></p>
                 <div class="container-fluid text-center col-3">
-                    <form class="col" th:action="@{/admin}" th:method="post" th:object="${newuser}">
+                   <form class="add-user-form">
                         <div class="row">
                             <div class="input-group input-group-sm mb-3">
                                 <label><strong>Имя</strong>
-                                    <input type="text" name="name" id="name"
+                                    <input type="text" name="name" id="add-name"
                                            class="form-control"
                                            aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </label>
@@ -111,7 +89,7 @@
                         <div class="row">
                             <div class="input-group input-group-sm mb-3">
                                 <label><strong>Возраст</strong>
-                                    <input type="number" name="age" id="age"
+                                    <input type="number" name="age" id="add-age"
                                            class="form-control"
                                            aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </label>
@@ -120,7 +98,7 @@
                         <div class="row">
                             <div class="input-group input-group-sm mb-3">
                                 <label><strong>Электронная почта</strong>
-                                    <input type="email" name="email" id="email" class="form-control"
+                                    <input type="email" name="email" id="add-email" class="form-control"
                                            aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </label>
                             </div>
@@ -128,7 +106,7 @@
                         <div class="row">
                             <div class="input-group input-group-sm mb-3">
                                 <label><strong>Логин</strong>
-                                    <input type="text" name="username" id="username"
+                                    <input type="text" name="username" id="add-username"
                                            class="form-control"
                                            aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </label>
@@ -137,7 +115,7 @@
                         <div class="row">
                             <div class="input-group input-group-sm mb-3">
                                 <label><strong>Пароль</strong>
-                                    <input type="password" name="password" id="password"
+                                    <input type="password" name="password" id="add-password"
                                            class="form-control"
                                            aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </label>
@@ -147,9 +125,9 @@
                             <div class="input-group input-group-sm mb-3">
                                 <label><strong>Роли</strong><br>
                                     <select class="custom-select bd-primary" size="2" multiple="multiple"
-                                            name="roles" id="roles" style="width: 210px">
-                                        <option value="ROLE_ADMIN">ADMIN</option>
-                                        <option selected value="ROLE_USER">USER</option>
+                                            name="roles" id="add-roles" style="width: 210px">
+                                        <option value="ROLE_ADMIN">Администратор</option>
+                                        <option selected value="ROLE_USER">Пользователь</option>
                                     </select>
                                 </label>
                             </div>
@@ -157,7 +135,7 @@
 
                         <div class="row">
                             <div class="form-group">
-                                <button type="submit" class="btn btn-success">Добавить</button>
+                                <button type="submit" id="add-submit" class="btn btn-success">Добавить</button>
                             </div>
                         </div>
                     </form>
@@ -167,13 +145,13 @@
     </div>
 </div>
 
-<div class="modal fade" th:each="editUser : ${users}" th:id="${'edit' + editUser.getId()}" role="dialog">
+<div class="modal fade" role="dialog" id="edit-window">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form th:method="PATCH" th:action="@{/admin/{id}/edit(id=${editUser.getId()})}" role="form" class="form-horizontal">
+            <form class="form-horizontal" role="form">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalEdit">Редактировать пользователя</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" id="edit-close-button" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -181,53 +159,49 @@
                     <form role="form" class="form-horizontal">
                         <div class="form-group">
                             <label>ID
-                                <input type="text" class="form-control" th:value="${editUser.id}"
-                                       readonly="readonly">
+                                <input type="text" class="form-control" id="edit-id" readonly="readonly">
                             </label>
                         </div>
                         <div class="form-group">
                             <label>Имя
-                                <input type="text" class="form-control" th:value="${editUser.name}"
-                                       name="name">
+                                <input type="text" class="form-control" id="edit-name" name="name">
                             </label>
                         </div>
                         <div class="form-group">
                             <label>Возраст
-                                <input type="number" class="form-control" th:value="${editUser.age}" name="age">
+                                <input type="number" class="form-control" id="edit-age" name="age">
                             </label>
                         </div>
                         <div class="form-group">
                             <label>Электронная почта
-                                <input type="text" class="form-control" th:value="${editUser.email}" name="email">
+                                <input type="text" class="form-control" id="edit-email" name="email">
                             </label>
                         </div>
                         <div class="form-group">
                             <label>Логин
-                                <input type="text" class="form-control" th:value="${editUser.username}"
-                                       name="username">
+                                <input type="text" class="form-control" id="edit-username" name="username">
                             </label>
                         </div>
                         <div class="form-group">
                             <label>Пароль
-                                <input type="password" class="form-control" th:value="${editUser.password}"
-                                       name="password">
+                                <input type="password" class="form-control" id="edit-password" name="password">
                             </label>
                         </div>
                         <div class="d-flex flex-row bd-highlight">
                             <div class="form-group">
                                 <label>Роль:
-                                    <select class="custom-select bd-primary" size="2" multiple name="editRoles"
+                                    <select class="custom-select bd-primary" size="2" multiple id="edit-roles" name="editRoles"
                                             style="width: 220px">
-                                        <option value="ROLE_ADMIN">ADMIN</option>
-                                        <option selected value="ROLE_USER">USER</option>
+                                        <option id="edit-role-admin" value="ROLE_ADMIN">Администратор</option>
+                                        <option id="edit-role-user" selected value="ROLE_USER">Пользователь</option>
                                     </select>
                                 </label>
                             </div>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                            <button type="submit" class="btn btn-info">Изменить</button>
+                            <button type="button" id="edit-exit-button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            <button type="submit" id="edit-submit-button" class="btn btn-info">Изменить</button>
                         </div>
                     </form>
                 </div>
@@ -238,50 +212,45 @@
 
 
 
-<div class="modal fade" th:each="deleteUser : ${users}" th:id="${'delete' + deleteUser.getId()}" role="dialog">
+<div class="modal fade" role="dialog" id="delete-window">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalDelete">Удалить</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" id="delete-close-button" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body container-fluid text-center col-6">
-                <form th:method="DELETE" th:action="@{/admin/{id}/delete(id=${deleteUser.getId()})}" role="form" class="form-horizontal">
+                <form class="form-horizontal" role="form">
                     <div class="form-group">
                         <label>ID
-                            <input type="text" class="form-control" th:value="${deleteUser.id}" readonly="readonly">
+                            <input type="text" class="form-control" id="delete-id" readonly="readonly">
                         </label>
                     </div>
                     <div class="form-group">
                         <label>Имя
-                            <input type="text" class="form-control" th:value="${deleteUser.name}"
-                                   readonly="readonly">
+                            <input type="text" class="form-control" id="delete-name" readonly="readonly">
                         </label>
                     </div>
                     <div class="form-group">
                         <label>Возраст
-                            <input type="text" class="form-control" th:value="${deleteUser.age}"
-                                   readonly="readonly">
+                            <input type="text" class="form-control" id="delete-age" readonly="readonly">
                         </label>
                     </div>
                     <div class="form-group">
                         <label>Электронная почта
-                            <input type="text" class="form-control" th:value="${deleteUser.email}"
-                                   readonly="readonly">
+                            <input type="text" class="form-control" id="delete-email" readonly="readonly">
                         </label>
                     </div>
                     <div class="form-group">
                         <label>Логин
-                            <input type="text" class="form-control" th:value="${deleteUser.username}"
-                                   readonly="readonly">
+                            <input type="text" class="form-control" id="delete-username" readonly="readonly">
                         </label>
                     </div>
                     <div class="form-group">
                         <label>Пароль
-                            <input type="password" class="form-control" th:value="${deleteUser.password}"
-                                   readonly="readonly">
+                            <input type="password" class="form-control" id="delete-password" readonly="readonly">
                         </label>
                     </div>
                     <div class="d-flex flex-row bd-highlight">
@@ -289,15 +258,15 @@
                             <label>Роль:
                                 <select class="custom-select bd-primary" size="2" disabled name="roles"
                                         style="width: 210px">
-                                    <option value="ROLE_ADMIN">ADMIN</option>
-                                    <option value="ROLE_USER">USER</option>
+                                    <option id="delete-role-admin" value="ROLE_ADMIN">Администратор</option>
+                                    <option id="delete-role-user" value="ROLE_USER">Пользователь</option>
                                 </select>
                             </label>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-danger">Удалить</button>
+                        <button type="button" id="delete-exit-button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" id="delete-submit-button" class="btn btn-danger">Удалить</button>
                     </div>
                 </form>
             </div>
@@ -305,5 +274,10 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script>
+<script src="admin.js"></script>
+<script src="adduser.js"></script>
+<script src="edit-delete-user.js"></script>
 </body>
 </html>
