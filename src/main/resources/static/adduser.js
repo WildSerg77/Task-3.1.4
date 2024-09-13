@@ -54,7 +54,7 @@ addUserForm.addEventListener("submit", async (e) => {
         }
 
         usersList.click();
-        location.reload();
+ //       location.reload();
     } catch (error) {
         console.error('Ошибка добавления пользователя:', error);
     }
