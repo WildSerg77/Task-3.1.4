@@ -52,9 +52,8 @@ addUserForm.addEventListener("submit", async (e) => {
         if (!response.ok) {
             throw new Error('Ошибка сети');
         }
-
         usersList.click();
- //       location.reload();
+        await getAllUsers();
     } catch (error) {
         console.error('Ошибка добавления пользователя:', error);
     }

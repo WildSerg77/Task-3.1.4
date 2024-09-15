@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -26,7 +26,11 @@
     <div class="col-2 fixed-left">
         <div th:fragment="leftmenu">
             <ul class="nav flex-sm-column">
-                <li class="nav-item bg-primary" sec:authorize="hasRole('ROLE_USER')">
+                <li class="nav-item bg-primary">
+                    <a class="nav-link text-white"
+                       href="#" sec:authorize="hasAuthority('ROLE_ADMIN')" th:href="@{/admin}">Администратор</a>
+                </li>
+                <li class="nav-item bg-primary" >
                     <a class="nav-link text-white"
                        href="#" th:href="@{/user}">Пользователь</a>
                 </li>

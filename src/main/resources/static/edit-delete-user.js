@@ -98,7 +98,6 @@ usersTable.addEventListener("click", async e => {
 
                 deleteExitButton.click();
                 await getAllUsers();
-  //              location.reload();
             } catch (error) {
                 console.error('Ошибка при удалении пользователя:', error);
             }
@@ -183,7 +182,6 @@ usersTable.addEventListener("click", async e => {
 
                 editExitButton.click();
                 await getAllUsers();
-  //              location.reload();
             } catch (error) {
                 console.error('Ошибка при обновлении данных пользователя:', error);
             }
